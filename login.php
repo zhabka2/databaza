@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration</title>
+    <title>Login</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -34,7 +34,6 @@
             margin-bottom: 8px;
         }
         input[type="text"],
-        input[type="email"],
         input[type="password"],
         button {
             width: 100%;
@@ -57,20 +56,11 @@
             text-align: center;
             margin-top: 10px;
         }
-        .profile {
-            margin-top: 20px;
-            border: 1px solid #ccc;
-            padding: 10px;
-            border-radius: 4px;
-        }
-        .profile p {
-            margin: 5px 0;
-        }
-        .login-link {
+        .register-link {
             text-align: center;
             margin-top: 10px;
         }
-        .login-link a {
+        .register-link a {
             color: blue;
             text-decoration: none;
         }
@@ -78,55 +68,55 @@
 </head>
 <body>
     <div class="container">
-        <h1>User Registration</h1>
+        <h1>User Login</h1>
         <?php
-        // Pripojenie k databáze
-        $servername = "localhost";
-        $username = "Denys";
-        $password = "1234";
-        $dbname = "lysenko3a2";
-
-        $conn = new mysqli($servername, $username, $password, $dbname);
-
-        // Overenie pripojenia
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
+        session_start();
+        if(isset($_SESSION['username'])) {
+            header("Location: profile.php");
+            exit;
         }
 
-        // Spracovanie registrácie po odoslání formulára
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if($_SERVER["REQUEST_METHOD"] == "POST") {
+            // Pripojenie k databáze
+            $servername = "localhost";
+            $username = "Denys";
+            $password = "1234";
+            $dbname = "lysenko3a2";
+
+            $conn = new mysqli($servername, $username, $password, $dbname);
+
+            // Overenie pripojenia
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+
             $username = $_POST['username'];
-            $email = $_POST['email'];
             $password = $_POST['password'];
 
-            // Vloženie používateľa do databázy
-            $sql = "INSERT INTO users (username, email, password) VALUES ('$username', '$email', '$password')";
+            // Overenie používateľa v databáze
+            $sql = "SELECT * FROM users WHERE username='$username' AND password='$password'";
+            $result = $conn->query($sql);
 
-            if ($conn->query($sql) === TRUE) {
-                echo "<p class='message'>Registration successful!</p>";
-                echo "<div class='profile'>";
-                echo "<h2>Your Profile</h2>";
-                echo "<p><strong>Username:</strong> $username</p>";
-                echo "<p><strong>Email:</strong> $email</p>";
-                echo "</div>";
+            if($result->num_rows == 1) {
+                $_SESSION['username'] = $username;
+                header("Location: profile.php");
+                exit;
             } else {
-                echo "<p class='message'>Error: " . $sql . "<br>" . $conn->error . "</p>";
+                echo "<p class='message'>Invalid username or password!</p>";
             }
-        }
 
-        $conn->close();
+            $conn->close();
+        }
         ?>
-        <form action="register.php" method="post">
+        <form action="" method="post">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
-            <button type="submit">Register</button>
+            <button type="submit">Login</button>
         </form>
-        <div class="login-link">
-            <p>Already have an account? <a href="login.php">Login</a></p>
+        <div class="register-link">
+            <p>Don't have an account? <a href="index.php">Register</a></p>
         </div>
     </div>
 </body>
