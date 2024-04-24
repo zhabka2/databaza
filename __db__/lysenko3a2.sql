@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hostiteľ: 127.0.0.1
--- Čas generovania: St 27.Mar 2024, 14:34
+-- Čas generovania: St 24.Apr 2024, 13:33
 -- Verzia serveru: 10.4.32-MariaDB
 -- Verzia PHP: 8.2.12
 
@@ -24,10 +24,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Štruktúra tabuľky pre tabuľku `zhabka`
+-- Štruktúra tabuľky pre tabuľku `lysenko3a2`
 --
 
-CREATE TABLE `zhabka` (
+CREATE TABLE `lysenko3a2` (
   `id` bigint(100) NOT NULL,
   `username` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
@@ -35,10 +35,10 @@ CREATE TABLE `zhabka` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Sťahujem dáta pre tabuľku `zhabka`
+-- Sťahujem dáta pre tabuľku `lysenko3a2`
 --
 
-INSERT INTO `zhabka` (`id`, `username`, `email`, `password`) VALUES
+INSERT INTO `lysenko3a2` (`id`, `username`, `email`, `password`) VALUES
 (0, 'ferko', 'ferko@email.xom', 'heslo');
 COMMIT;
 
